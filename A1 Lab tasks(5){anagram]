@@ -1,0 +1,116 @@
+;.Check if 2 strings are anagram
+
+
+org 100h   
+
+
+lea dx,input1 
+call input  
+
+mov ah,02h
+mov dl,' '
+int 21h 
+
+lea si,input1 
+lea bx,occ1    
+
+call occurance 
+
+lea dx,input2 
+call input  
+lea si,input2 
+lea bx,occ2  
+
+call occurance  
+call equal_or_not
+
+
+int 20h
+       
+
+input proc near
+    pushf  
+    
+    mov ah,0Ah 
+    int 21h  
+
+    
+    popf 
+    ret
+input endp 
+
+occurance proc near 
+    pushf        
+           
+         
+        inc si
+        inc si   
+        
+        l1:     
+        mov al,[si]
+        cmp al,'$'
+        je endl1  
+        cmp al,13
+        je endl1 
+
+        sub al,'a' 
+        xor ah,ah
+        mov di,ax
+        inc [bx+di]  
+        inc si
+        jmp l1                   
+        endl1:
+        
+    popf   
+    ret
+occurance endp 
+
+
+equal_or_not proc near 
+    pushf
+        lea si,occ1
+        lea di,occ2
+        
+        mov cx,26
+        
+        lll1:
+           mov ah,[si]
+           mov al,[di]
+           cmp ah,al
+           jne not_equ
+           inc si
+           inc di
+        
+        LOOP lll1  
+        mov ah,09h
+        lea dx,equ
+        int 21h 
+        jmp over
+          
+        
+        
+        not_equ:
+            mov ah,09h
+            lea dx,not_equal
+            int 21h  
+            
+         over:
+     
+    popf
+    ret
+equal_or_not endp
+
+ret 
+
+input1 db 50 dup('$')    
+input2 db 50 dup('$')   
+
+occ1 db 26 dup(0)    
+occ2 db 26 dup(0) 
+
+equ db " anagram",'$'     
+not_equal db " not anagram",'$'
+
+
+
+
