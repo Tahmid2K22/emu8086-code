@@ -1,0 +1,147 @@
+
+;Fibonacci sequence generator
+
+org 100h 
+
+mov si,235
+
+call input_num
+call fibo
+int 20h
+
+input_num proc near      
+    pushf
+    
+        l1:
+            mov ah,01h
+            int 21h 
+            
+            cmp al,32
+            je end  
+            cmp al,13
+            je end
+            
+            sub al,'0'
+            xor ch,ch
+            mov cl,al
+            mov ax,10
+            mul num 
+            mov num,ax
+            add num,cx
+            jmp l1  
+            
+         end:
+    popf
+    
+    
+ret
+input_num endp   
+
+
+fibo proc near      
+    pushf 
+        mov ax,0
+        mov bx,1
+        mov cx,num 
+        push ax
+         
+        mov ah,09h
+        lea dx,s1
+        int 21h 
+          
+        mov ah,09h 
+        lea dx,s2
+        int 21h 
+        
+        dec cx
+        dec cx 
+        pop ax
+        
+        loop_fibo:
+        push bx 
+        add bx,ax 
+        pop ax
+        
+        mov si,bx
+        call  output
+        
+        
+        
+        LOOP loop_fibo
+        
+        
+        
+    
+       
+    popf
+    
+    
+ret
+fibo endp    
+
+output proc endp
+      pushf 
+      push ax 
+      push cx
+      mov ax,si
+      mov si,10  
+      mov cx,0
+      
+      
+      lll1: 
+        xor dx,dx 
+        div si
+        push dx
+        inc cx 
+        
+        cmp ax,0
+        je loop_shesh 
+        
+        
+        jmp lll1
+        
+        
+      loop_shesh:  
+      
+      loop2: 
+        pop dx
+        add dx,'0'
+        
+        mov ah,02h
+        int 21h
+      
+      LOOP loop2  
+      
+      mov ah,02h
+      mov dl,' '
+      int 21h
+      
+      
+      pop cx     
+      pop ax
+      popf   
+      ret
+output endp 
+
+
+ret
+
+num dw 0 
+
+s1 db "0 ",'$'       
+s2 db "1 ",'$'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
