@@ -1,0 +1,61 @@
+;1 + r^2 + r^3 + ..... + r^n
+;solve this using procedure.
+;pass the parameters (r, n) using stack
+
+org 100h
+
+mov di,4
+mov cx,5
+ 
+
+
+
+mov dx,1
+
+ll1:
+   push di
+   push cx
+   call pow 
+   ADD SP, 4
+   add dx,ax 
+LOOP ll1
+
+
+int 20h
+
+pow proc near
+    mov bp,sp
+    push cx
+    pushf
+    
+    mov ax,[bp+4] 
+    mov cx,[bp+2]
+    
+    
+    mov plier,ax 
+   
+    dec cx
+    cmp cx,0
+    je over
+    
+    l1: 
+      push dx
+      mul plier
+      pop dx  
+    
+    LOOP l1
+    
+    over:
+    popf
+    pop cx 
+    
+    ret
+pow endp
+
+ret
+
+plier dw 0
+
+
+
+
