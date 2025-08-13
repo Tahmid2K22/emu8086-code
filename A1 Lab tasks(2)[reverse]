@@ -1,0 +1,67 @@
+
+;Take a string from console input. Then reverse it using stack and procedure.
+;Store the reverse string in a previously used string.
+;Don't use any further strings.
+
+org 100h 
+
+call input    
+call reverse
+
+int 20h
+
+
+input proc near 
+    pushf  
+     lea dx,string
+     mov ah,0ah
+     int 21h   
+    
+    popf   
+    ret
+input endp
+
+reverse proc near 
+    pushf  
+     lea si,string 
+     mov cx,0
+     inc si
+     inc si  
+     
+     l1:   
+        mov al,[si]
+        cmp al,'$'
+        je endl1 
+        cmp al,13
+        je endl1 
+        inc cx
+        xor ah,ah
+        inc si
+        push ax
+        jmp l1
+        
+     
+        endl1: 
+        
+        lea si,string 
+        inc si
+        inc si
+        
+        l2:  
+           pop ax
+           mov byte ptr [si],al     
+           inc si
+        
+        LOOP l2
+    popf   
+    ret
+reverse endp
+    
+
+ret 
+
+string db 50 dup('$')
+
+
+
+
