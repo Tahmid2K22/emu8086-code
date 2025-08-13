@@ -1,0 +1,56 @@
+
+;First Lab task in B1:
+;Check a number even or odd
+;If even then save dx 1
+;else save dx 2
+
+org 100h
+
+call input_num
+
+mov al,num
+
+and al,1
+jz even
+mov dx,2
+jmp odd
+even:
+    mov dx,1
+
+
+
+odd:
+
+int 20h
+
+input_num proc near
+    pushf 
+    
+        l1:
+            mov ah,01h
+            int 21h
+            
+            cmp al,32
+            je exit
+            cmp al,13
+            je exit 
+            
+            sub al,'0' 
+            mov dl,al
+            mov al,10  
+            xor ah,ah
+            mul num  
+            mov num,al   
+            add num,dl
+            jmp l1
+
+            exit:
+    popf
+    ret
+input_num endp
+
+ret
+num db 0
+
+
+
