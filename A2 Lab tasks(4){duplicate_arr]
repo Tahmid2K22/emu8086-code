@@ -1,0 +1,60 @@
+;Remove duplicates from a given array
+
+org 100h
+
+
+lea bx,n_arr
+call dup_delete 
+
+int 20h
+
+
+dup_delete proc near
+    
+    mov si,0
+    
+    l1:
+        cmp si,sz
+        jge exit1
+        mov di,si
+        mov ax,arr[si]
+        inc di
+        inc di
+        l2: 
+            cmp di,sz
+            jge exit2
+        
+            mov cx,arr[di]
+            cmp ax,cx
+            je skip 
+            inc di 
+            inc di
+            jmp l2 
+    
+            
+            
+            
+        exit2:
+            mov [bx],ax
+            inc bx 
+            inc bx
+            
+            
+        skip:
+        inc si  
+        inc si
+    jmp l1
+            
+        
+    
+    exit1:
+    
+ret
+dup_delete endp
+
+ret   
+
+arr dw 1,1,2,2,3,4,5,5,6,100,1,101,500,400,2
+sz dw ($-arr)
+n_arr dw 50 dup(0) 
+
