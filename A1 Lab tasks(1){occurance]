@@ -42,7 +42,10 @@ occurance proc near
         l1:     
         mov al,[si]
         cmp al,'$'
-        je endl1
+        je endl1  
+        cmp al,13
+        je endl1 
+
         sub al,'a' 
         xor ah,ah
         mov di,ax
