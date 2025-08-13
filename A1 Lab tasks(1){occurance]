@@ -1,0 +1,64 @@
+;We are given two strings of same length find the occurrence of each character in both string are equal or not
+
+org 100h   
+
+
+lea dx,input1 
+call input 
+lea si,input1 
+lea bx,occ1    
+
+call occurance 
+
+lea dx,input2 
+call input  
+lea si,input2 
+lea bx,occ2  
+
+call occurance
+
+
+int 20h
+       
+
+input proc near
+    pushf  
+    
+    mov ah,0Ah 
+    int 21h  
+
+    
+    popf 
+    ret
+input endp 
+
+occurance proc near 
+    pushf        
+           
+         
+        inc si
+        inc si   
+        
+        l1:     
+        mov al,[si]
+        cmp al,'$'
+        je endl1
+        sub al,'a' 
+        xor ah,ah
+        mov di,ax
+        inc [bx+di]  
+        inc si
+        jmp l1                   
+        endl1:
+        
+    popf   
+    ret
+occurance endp
+
+ret 
+
+input1 db 50 dup('$')    
+input2 db 50 dup('$')   
+
+occ1 db 26 dup(0)    
+occ2 db 26 dup(0)
