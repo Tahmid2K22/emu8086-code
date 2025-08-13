@@ -1,0 +1,95 @@
+;Check perfect number
+
+org 100h  
+
+call input_num       
+call perfect
+
+int 20h
+
+input_num proc near
+    pushf 
+    
+        l1:
+            mov ah,01h
+            int 21h
+            
+            cmp al,32
+            je exit
+            cmp al,13
+            je exit 
+            
+            sub al,'0' 
+            mov dl,al
+            mov al,10  
+            xor ah,ah
+            mul num  
+            mov num,al   
+            add num,dl
+            jmp l1
+            
+            
+            
+            
+            exit:
+    popf
+    ret
+input_num endp        
+
+perfect proc near
+    pushf     
+        xor ch,ch
+        mov cl,num
+        dec cx 
+       
+        mov dx,0
+        ll1:  
+            XOR AH,AH
+            mov al,num  
+            div cl
+            cmp ah,0
+            jne not_div
+            
+            add dx,cx
+             
+            not_div:
+            LOOP ll1
+            
+        cmp dh,0
+        jne no 
+        
+        cmp dl,num
+        jne no
+         
+        mov ah,09h
+        lea dx,yes
+        int 21h
+        jmp exit_proc
+        
+        
+        
+        
+        no:
+           mov ah,09h
+           lea dx,noo
+           int 21h
+            
+        exit_proc:
+    popf
+    ret
+perfect endp
+
+
+ret    
+
+num db 0   
+
+yes db "yes",'$'   
+noo db "no",'$'
+
+
+
+
+
+
+
